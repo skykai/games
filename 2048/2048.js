@@ -80,17 +80,132 @@ G2048.prototype = {
         }
     },
     moveRight : function() {
-        console.log('right');
+        /*向右移动*/
+        var i,j,k,n;
+        for (j = 0; j < 4; j++) {
+            n = 3;
+            for (i = 3; i >= 0; i--) {
+                if(this.arr[i][j].value==0){
+                    continue;
+                }
+                k = i+1;
+                aa:
+                    while(k<=n){
+                        if(this.arr[k][j].value == 0){
+                            if(k == n || (this.arr[k+1][j].value!=0 && this.arr[k+1][j].value!=this.arr[i][j].value)){
+                                this.moveCell(i,j,k,j);
+                            }
+                            k++;
+
+
+                        }else{
+                            if(this.arr[k][j].value == this.arr[i][j].value){
+                                //this.mergeCells(i,j,k,j);
+                                n--;
+                            }
+                            break aa;
+                        }
+                    }
+            }
+        }
+
 
     },
     moveLeft : function() {
-        console.log('left');
+        /*向左移动*/
+        var i,j,k,n;
+
+        for (j = 0; j < 4; j++) {
+            n=0;
+            for (i = 0; i < 4; i++) {
+                if(this.arr[i][j].value==0){
+                    continue;
+                }
+                k=i-1;
+                aa:
+                    while(k>=n){
+                        if(this.arr[k][j].value == 0){
+                            if(k == n || (this.arr[k-1][j].value!=0 && this.arr[k-1][j].value!=this.arr[i][j].value)){
+                                this.moveCell(i,j,k,j);
+                            }
+                            k--;
+                        }else{
+                            if(this.arr[k][j].value == this.arr[i][j].value){
+                                //this.mergeCells(i,j,k,j);
+                                n++;
+                            }
+                            break aa;
+
+                        }
+                    }
+            }
+        }
     },
     moveDown : function() {
-        console.log('down');
+        /*向下移动*/
+        var i,j,k,n;
+        for (i = 0; i < 4; i++) {
+            n = 3;
+            for (j = 3; j >= 0; j--) {
+                if(this.arr[i][j].value==0){
+                    continue;
+                }
+                k = j+1;
+                aa:
+                    while(k<=n){
+                        if(this.arr[i][k].value == 0){
+                            if(k == n || (this.arr[i][k+1].value!=0 && this.arr[i][k+1].value!=this.arr[i][j].value)){
+                                this.moveCell(i,j,i,k);
+                            }
+                            k++;
+
+                        }else{
+                            if(this.arr[i][k].value == this.arr[i][j].value){
+                               // this.mergeCells(i,j,i,k);
+                                n--;
+                            }
+                            break aa;
+                        }
+
+                    }
+            }
+        }
     },
     moveUp : function() {
-        console.log('up');
+        // 向上移动
+        var i,j,k,n;
+        for(i = 0; i < 4; i++){
+            n = 0;
+            for(j = 0; j < 4; j++){
+                if(this.arr[i][j].value == 0){
+                    continue;
+                }
+                k = j-1;
+                aa:
+                    while(k>=n){
+                        if(this.arr[i][k].value == 0){
+                            if( k == n || (this.arr[i][k-1].value!=0 && this.arr[i][k-1].value != this.arr[i][j].value)){
+                                this.moveCell(i,j,i,k);
+                            }
+                            k--;
+                        }else{
+                            if(this.arr[i][k].value == this.arr[i][j].value){
+                                //this.mergeCells(i,j,i,k);
+                                n++;
+                            }
+                            break aa;
+                        }
+
+                    }
+            }
+        }
+    },
+    moveCell : function(i1, j1,i2, j2){
+        //移动格子
+        this.arr[i2][j2].value = this.arr[i1][j1];
+        this.arr[i1][j1].value = 0;
+        this.moveAble = true;
+        $('.p'+i1+j1).removeClass('p'+i1+j1).addClass('p'+i2+j2);
     },
     checkLose : function() {
 
